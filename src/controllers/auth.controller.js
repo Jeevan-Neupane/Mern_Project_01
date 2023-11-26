@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 
 export const getAuth = async (req, res) => {
 
-
+    res.send("Hello Jeevan you need to work on this first");
 
 }
 
@@ -57,7 +57,7 @@ export const register = async (req, res) => {
 }
 
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
@@ -72,7 +72,6 @@ export const login = async (req, res) => {
 
 
         const isPasswordValid = await bcrypt.compare(password, userExist.password);
-        console.log(isPasswordValid);
 
         if (isPasswordValid) {
             res.status(200).json({
@@ -87,9 +86,9 @@ export const login = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).json({
-            message: "Internal Server Error"
-        })
+        const message = error;
+
+        next({ message });
     }
 
 }
